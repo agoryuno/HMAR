@@ -177,12 +177,11 @@ class SMPL(nn.Module):
 
         if data_struct is None:
             if osp.isdir(model_path):
-                model_fn = 'SMPL_{}.{ext}'.format(gender.upper(), ext='pkl')
+                model_fn = f'SMPL_{gender.upper()}.pkl'
                 smpl_path = os.path.join(model_path, model_fn)
             else:
                 smpl_path = model_path
-            assert osp.exists(smpl_path), 'Path {} does not exist!'.format(
-                smpl_path)
+            assert osp.exists(smpl_path), f'Path {smpl_path} does not exist!'
 
             with open(smpl_path, 'rb') as smpl_file:
                 data_struct = Struct(**pickle.load(smpl_file,
