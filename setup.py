@@ -1,7 +1,5 @@
 from setuptools import setup, find_packages
 
-print (find_packages())
-
 setup(
     name='HMAR',
     version='0.0.1',
