@@ -12,7 +12,8 @@ setup(
     install_requires=[
         "torch",
         "numpy",
-        "yacs"
+        "yacs",
+        "chumpy"
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
