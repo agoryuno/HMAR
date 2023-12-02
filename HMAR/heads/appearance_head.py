@@ -13,7 +13,17 @@ class TextureHead(nn.Module):
     Outputs mesh texture
     """
 
-    def __init__(self, nz_feat, uv_sampler, opts, img_H=64, img_W=128, n_upconv=6, nc_init=32, predict_flow=False, symmetric=False, num_sym_faces=624):
+    def __init__(self, 
+                 nz_feat,
+                 uv_sampler, 
+                 #opts,
+                 img_H=64, 
+                 img_W=128, 
+                 n_upconv=6, 
+                 nc_init=32, 
+                 predict_flow=False, 
+                 symmetric=False, 
+                 num_sym_faces=624):
         super(TextureHead, self).__init__()
         self.feat_H = img_H // (2 ** n_upconv)
         self.feat_W = img_W // (2 ** n_upconv)
@@ -57,7 +67,6 @@ class decoder(nn.Module):
         self.G_middle_4 = ResnetBlock(256, 4 * nf)
         self.G_middle_4_1 = ResnetBlock(2*4 * nf, 4 * nf)
         
-        
         self.up_0 = ResnetBlock(8 * nf, 4 * nf)
         self.up_1 = ResnetBlock(4 * nf, 4 * nf)
         self.up_2 = ResnetBlock(4 * nf, 2 * nf)
@@ -66,8 +75,6 @@ class decoder(nn.Module):
         self.conv_img = nn.Conv2d(nf, self.nc_final, 3, padding=1)
 
         self.up = nn.Upsample(scale_factor=2, mode="bilinear")
-        
-        
         
     def forward(self, conv_featz, skips):
         x1,x2,x3,x4 = skips
@@ -105,7 +112,6 @@ class decoder(nn.Module):
         return x
 
 
-
 class ResnetBlock(nn.Module):
     def __init__(self, fin, fout):
         super().__init__()
@@ -125,15 +131,12 @@ class ResnetBlock(nn.Module):
         self.conv_1 = spectral_norm(self.conv_1)
         if self.learned_shortcut:
             self.conv_s = spectral_norm(self.conv_s)
-            
-            
 
         # define normalization layers
         self.norm_0 = BatchNorm2d(fin)
         self.norm_1 = BatchNorm2d(fmiddle)
         if self.learned_shortcut:
             self.norm_s = BatchNorm2d(fin)
-
             
     # note the resnet block with SPADE also takes in |seg|,
     # the semantic segmentation map as input

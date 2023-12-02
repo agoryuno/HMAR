@@ -37,7 +37,7 @@ class HMAR(nn.Module):
         self.cfg = cfg
 
         nz_feat  = 512
-        tex_size = 6
+        #tex_size = 6
         img_H    = 256
         img_W    = 256
             
@@ -54,8 +54,16 @@ class HMAR(nn.Module):
         self.F               = uv_sampler.size(1)   
         self.T               = uv_sampler.size(2)
         self.uv_sampler      = uv_sampler.view(-1, self.F, self.T*self.T, 2)
-        self.backbone        = resnet(cfg.MODEL.BACKBONE, num_layers=self.cfg.MODEL.BACKBONE.NUM_LAYERS, pretrained=True)
-        self.texture_head    = TextureHead(nz_feat, self.uv_sampler, self.cfg, img_H=img_H, img_W=img_W)
+        self.backbone        = resnet(
+                                cfg.MODEL.BACKBONE, 
+                                num_layers=self.cfg.MODEL.BACKBONE.NUM_LAYERS, 
+                                pretrained=True)
+        self.texture_head    = TextureHead(
+                                nz_feat, 
+                                self.uv_sampler, 
+                                #self.cfg, 
+                                img_H=img_H, 
+                                img_W=img_W)
         self.encoding_head   = EncodingHead(img_H=img_H, img_W=img_W)
     
         smpl_params         = {k.lower(): v for k,v in dict(cfg.SMPL).items()}
