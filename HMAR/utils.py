@@ -1,8 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+#from __future__ import absolute_import
+#from __future__ import division
+#from __future__ import print_function
 
-import collections
+#import collections
 import torch
 import torch.nn as nn
 import numpy as np
@@ -41,7 +41,6 @@ def perspective_projection(points, rotation, translation, focal_length, camera_c
     projected_points = torch.einsum('bij,bkj->bki', K, projected_points)
 
     return projected_points[:, :, :-1]
-
 
 
 def compute_uvsampler(vt, ft, tex_size=6):

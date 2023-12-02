@@ -6,7 +6,9 @@ from __future__ import division
 from __future__ import print_function
 import torch
 import torch.nn as nn
-import math
+#import math
+
+import numpy as np
 
 class Flatten(nn.Module):
     def forward(self, x):
@@ -249,7 +251,6 @@ def net_init(net):
 def bilinear_init(kernel_size=4):
     # Following Caffe's BilinearUpsamplingFiller
     # https://github.com/BVLC/caffe/pull/2213/files
-    import numpy as np
     width = kernel_size
     height = kernel_size
     f = int(np.ceil(width / 2.))
