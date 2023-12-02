@@ -8,7 +8,15 @@ setup(
     description='Simplified code for the HMAR model',
     long_description='Original T3PR and HMAR models are at: https://github.com/brjathu/T3DP',
     url='https://github.com/agoryuno/HMAR',
-    packages=["HMAR"],
+    packages=[
+        "HMAR",
+        "HMAR.model",
+        "HMAR.joint_mapper",
+        "HMAR.utils",
+        "HMAR.backbones",
+        "HMAR.heads",
+        "HMAR.smplx"
+        ],
     install_requires=[
         "torch",
         "numpy",
