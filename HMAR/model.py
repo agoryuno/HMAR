@@ -25,7 +25,7 @@ from .smplx import create
 #from .utils import perspective_projection
 
 from yacs.config import CfgNode as CN
-#from .renderer import Renderer
+from .renderer import Renderer
 from .utils import compute_uvsampler
 
 class HMAR(nn.Module):
