@@ -31,7 +31,7 @@ from .utils import compute_uvsampler
 class HMAR(nn.Module):
     
     def __init__(self, config_path: str):
-        super(HMAR, self).__init__()
+        super().__init__()
         with open(config_path, 'r') as f:
             cfg = CN.load_cfg(f); cfg.freeze()
         self.cfg = cfg
