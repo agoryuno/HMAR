@@ -25,7 +25,7 @@ from .smplx import create
 #from .utils import perspective_projection
 
 from yacs.config import CfgNode as CN
-from .renderer import Renderer
+#from .renderer import Renderer
 from .utils import compute_uvsampler
 
 class HMAR(nn.Module):
@@ -192,11 +192,11 @@ class HMAR(nn.Module):
         return rgb_from_pred, pred_keypoints_2d_smpl, pred_keypoints_3d_smpl, pred_cam_t_bs"""
     
     
-    def reset_nmr_sigle(self, image_size):
-        self.neural_renderer = Renderer(focal_length=self.cfg.EXTRA.FOCAL_LENGTH, img_res=image_size, faces=self.faces_cpu)
+    #def reset_nmr_sigle(self, image_size):
+    #    self.neural_renderer = Renderer(focal_length=self.cfg.EXTRA.FOCAL_LENGTH, img_res=image_size, faces=self.faces_cpu)
     
-    def reset_nmr(self, image_size):
-        self.neural_renderer = Renderer(focal_length=self.cfg.EXTRA.FOCAL_LENGTH, img_res=image_size, faces=self.faces_cpu)
+    #def reset_nmr(self, image_size):
+    #    self.neural_renderer = Renderer(focal_length=self.cfg.EXTRA.FOCAL_LENGTH, img_res=image_size, faces=self.faces_cpu)
 
         
     def get_smpl_pose(self, pose_embeddings):
