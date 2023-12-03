@@ -13,7 +13,9 @@ setup(
         "torch",
         "numpy",
         "yacs",
-        "chumpy"
+        "chumpy",
+        "pyrender",
+        "trimesh"
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
