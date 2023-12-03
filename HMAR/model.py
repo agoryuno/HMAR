@@ -22,10 +22,8 @@ from .heads.appearance_head import TextureHead
 from .heads.encoding_head import EncodingHead
 from .joint_mapper import JointMapper, smpl_to_openpose
 from .smplx import create
-#from .utils import perspective_projection
 
 from yacs.config import CfgNode as CN
-#from .renderer import Renderer
 from .utils import compute_uvsampler
 
 class HMAR(nn.Module):
@@ -33,42 +31,43 @@ class HMAR(nn.Module):
     def __init__(self, config_path: str):
         super().__init__()
         with open(config_path, 'r') as f:
-            cfg = CN.load_cfg(f); cfg.freeze()
+            cfg = CN.load_cfg(f)
+            cfg.freeze()
         self.cfg = cfg
 
-        nz_feat  = 512
+        nz_feat = 512
         #tex_size = 6
-        img_H    = 256
-        img_W    = 256
+        img_H = 256
+        img_W = 256
             
-        texture_file         = np.load(self.cfg.SMPL.TEXTURE)
-        self.faces_cpu       = texture_file['smpl_faces'].astype('uint32')
+        texture_file = np.load(self.cfg.SMPL.TEXTURE)
+        self.faces_cpu = texture_file['smpl_faces'].astype('uint32')
         
         # NMR init
-        vt                   = texture_file['vt']
-        ft                   = texture_file['ft']
-        uv_sampler           = compute_uvsampler(vt, ft, tex_size=6)
-        uv_sampler           = torch.tensor(uv_sampler, dtype=torch.float)
-        uv_sampler           = uv_sampler.unsqueeze(0)
+        vt = texture_file['vt']
+        ft = texture_file['ft']
+        uv_sampler = compute_uvsampler(vt, ft, tex_size=6)
+        uv_sampler = torch.tensor(uv_sampler, dtype=torch.float)
+        uv_sampler = uv_sampler.unsqueeze(0)
 
-        self.F               = uv_sampler.size(1)   
-        self.T               = uv_sampler.size(2)
-        self.uv_sampler      = uv_sampler.view(-1, self.F, self.T*self.T, 2)
-        self.backbone        = resnet(
+        self.F = uv_sampler.size(1)   
+        self.T = uv_sampler.size(2)
+        self.uv_sampler = uv_sampler.view(-1, self.F, self.T*self.T, 2)
+        self.backbone = resnet(
                                 cfg.MODEL.BACKBONE, 
                                 num_layers=self.cfg.MODEL.BACKBONE.NUM_LAYERS, 
                                 pretrained=True)
-        self.texture_head    = TextureHead(
+        self.texture_head = TextureHead(
                                 nz_feat, 
                                 self.uv_sampler, 
                                 #self.cfg, 
                                 img_H=img_H, 
                                 img_W=img_W)
-        self.encoding_head   = EncodingHead(img_H=img_H, img_W=img_W)
+        self.encoding_head = EncodingHead(img_H=img_H, img_W=img_W)
     
-        smpl_params         = {k.lower(): v for k,v in dict(cfg.SMPL).items()}
-        joint_mapper         = JointMapper(smpl_to_openpose(model_type=cfg.SMPL.MODEL_TYPE))
-        self.smpl           = create(**smpl_params,
+        smpl_params = {k.lower(): v for k,v in dict(cfg.SMPL).items()}
+        joint_mapper = JointMapper(smpl_to_openpose(model_type=cfg.SMPL.MODEL_TYPE))
+        self.smpl = create(**smpl_params,
                                   joint_mapper = joint_mapper,
                                   create_betas=False,
                                   create_body_pose=False,
@@ -83,7 +82,7 @@ class HMAR(nn.Module):
         
         #self.neural_renderer = Renderer(focal_length=self.cfg.EXTRA.FOCAL_LENGTH, img_res=256, faces=self.faces_cpu)
         
-        self.smpl_head      = SMPLHead(cfg)
+        self.smpl_head = SMPLHead(cfg)
         self.smpl_head.pool = 'pooled'
         
     def forward(self, x):
